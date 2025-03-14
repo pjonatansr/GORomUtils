@@ -7,9 +7,7 @@ function getMessage(hour) {
   const mentions = "<@262002263101407233> <@365676086874603522>"
   const message = (messages && messages.hasOwnProperty(hour)) ? messages[hour] : 'MVP, bora!';
 
-  console.log(`Message: ${message}`);
-
-  return `${mentions}: ${message}`;
+  return mentions + ' - ' + message;
 }
 
 module.exports = getMessage;
