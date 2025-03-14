@@ -28,11 +28,11 @@ jobs:
         id: get-message
         run: |
           message=$(node ./scripts/getMessage.js)
-          # use env to pass the message to the next step
           echo "message=$message" >> $GITHUB_ENV
           echo "Mensagem retornada: $message"
         env:
           time: ${{ env.time }}
+          message: ${{ env.message }}
 
       - name: Send message to Discord Webhook
         run: |
