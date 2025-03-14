@@ -27,6 +27,7 @@ jobs:
         run: |
           message=$(node ./scripts/getMessage.js)
           echo "message=$message" >> $GITHUB_ENV
+          echo "Mensagem retornada: $message"
 
       - name: Send message to Discord Webhook
         run: |

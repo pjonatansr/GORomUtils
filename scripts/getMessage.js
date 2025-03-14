@@ -12,3 +12,5 @@ function getMessage(hour) {
   return `${mentions}\n${message}`;
 }
 
+module.exports = getMessage;
+
