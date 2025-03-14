@@ -27,9 +27,9 @@ jobs:
       - name: Run JavaScript to get the message
         id: get-message
         run: |
-          message=$(node ./scripts/getMessage.js "${{ env.time }}")
-          echo "message=$message" >> $GITHUB_ENV
-          echo "Mensagem capturada: $message"
+          message=$(node ./scripts/getMessage.js)
+          echo "::set-output name=message::$message"
+          echo "Mensagem retornada: $message"
         env:
           time: ${{ env.time }}
 
@@ -37,6 +37,6 @@ jobs:
         run: |
           curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
-          -d "{\"content\": \"${{ env.message }}\"}"
+          -d "{\"content\": \"${{ steps.get-message.outputs.message }}\"}"
         env:
           message: ${{ env.message }}
