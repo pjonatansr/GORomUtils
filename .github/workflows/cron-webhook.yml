@@ -25,7 +25,7 @@ jobs:
       - name: Run JavaScript to get the message
         id: get-message
         run: |
-          message=$(node ./scripts/getMessage.js)
+          message=$(node ./scripts/getMessage.js $hour)
           echo "message=$message" >> $GITHUB_ENV
           echo "Mensagem retornada: $message"
 
