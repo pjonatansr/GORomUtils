@@ -2,8 +2,8 @@ name: MVP Hunter Reminder
 
 on:
   schedule:
-    # Executa de 2 em 2 horas, no minuto 55, entre 3h e 23h UTC, excluindo 1h a 7h no horário GMT-3
-    - cron: "55 3,11-23/2 * * *"
+    # Executa de 2 em 2 horas, no minuto 53, entre 3h e 23h UTC, excluindo 1h a 7h no horário GMT-3
+    - cron: "53 3,11-23/2 * * *"
   workflow_dispatch:
 
 jobs:

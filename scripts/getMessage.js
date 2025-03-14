@@ -1,13 +1,11 @@
 const fs = require('fs');
 
 function getMessage(hour) {
-  const path = './messages.json'; // Caminho para o arquivo messages.json na raiz
+  const path = './messages.json';
   const messages = JSON.parse(fs.readFileSync(path, 'utf-8'));
+  
+  const mentions = "<@262002263101407233> <@365676086874603522>"
+  const message = messages[hour] || 'MVP, bora!';
 
-  // Se houver uma mensagem para a hora atual, retorna ela, senão, retorna uma mensagem padrão
-  return messages[hour] || 'MVP, bora!';
+  return `${mentions}\n${message}`;
 }
-
-// Para uso no GitHub Action
-const currentTime = process.env.time;
-console.log(getMessage(currentTime)); // Imprime a mensagem para o GitHub Action
