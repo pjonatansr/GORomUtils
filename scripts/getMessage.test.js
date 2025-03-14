@@ -8,7 +8,7 @@ describe('getMessage', () => {
 
 	test('returns a default message when hour is not in messages', () => {
 		const result = getMessage("11");
-		expect(result).toBe('<@262002263101407233> <@365676086874603522>\nMVP, bora!');
+		expect(result).toBe('<@262002263101407233> <@365676086874603522>\nMVP, bora! (mensagem não encontrada)');
 	});
 
 	test('returns a specific message when hour is in messages', () => {
