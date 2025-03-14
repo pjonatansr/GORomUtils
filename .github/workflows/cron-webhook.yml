@@ -27,9 +27,9 @@ jobs:
       - name: Run JavaScript to get the message
         id: get-message
         run: |
-          node ./scripts/getMessage.js "${{ env.time }}"
-          echo "message=$(cat message.txt)" >> $GITHUB_ENV
-          echo "Mensagem capturada: $(cat message.txt)"
+          message=$(node ./scripts/getMessage.js "${{ env.time }}")
+          echo "message=$message" >> $GITHUB_ENV
+          echo "Mensagem capturada: $message"
         env:
           time: ${{ env.time }}
 
