@@ -18,7 +18,7 @@ describe('getMessage', () => {
 
 	test('reads messages from the correct file path', () => {
 		const spy = jest.spyOn(fs, 'readFileSync');
-		getMessage(10);
+		getMessage("10");
 		expect(spy).toHaveBeenCalledWith('./messages.json', 'utf-8');
 		spy.mockRestore();
 	});
