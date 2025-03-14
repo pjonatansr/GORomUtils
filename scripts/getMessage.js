@@ -7,5 +7,8 @@ function getMessage(hour) {
   const mentions = "<@262002263101407233> <@365676086874603522>"
   const message = messages[hour] || 'MVP, bora!';
 
+  console.log(`Message: ${message}`);
+
   return `${mentions}\n${message}`;
 }
+
