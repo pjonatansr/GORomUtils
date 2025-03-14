@@ -9,7 +9,7 @@ function getMessage(hour) {
 
   console.log(`Message: ${message}`);
 
-  return `${mentions}\n${message}`;
+  return `${mentions}\\n${message}`;
 }
 
 module.exports = getMessage;
