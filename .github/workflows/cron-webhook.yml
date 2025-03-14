@@ -2,7 +2,7 @@ name: MVP Hunter Reminder
 
 on:
   schedule:
-    - cron: "53 1-3/2,11-23/2 * * *"
+    - cron: "52 1-3/2,11-23/2 * * *"
   workflow_dispatch:
 
 jobs:
@@ -28,7 +28,8 @@ jobs:
         id: get-message
         run: |
           message=$(node ./scripts/getMessage.js)
-          echo "::set-output name=message::$message"
+          # use env to pass the message to the next step
+          echo "message=$message" >> $GITHUB_ENV
           echo "Mensagem retornada: $message"
         env:
           time: ${{ env.time }}
@@ -37,6 +38,6 @@ jobs:
         run: |
           curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
-          -d "{\"content\": \"${{ steps.get-message.outputs.message }}\"}"
+          -d "{\"content\": \"${{ env.message }}\"}"
         env:
           message: ${{ env.message }}
