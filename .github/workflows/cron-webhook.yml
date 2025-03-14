@@ -20,13 +20,15 @@ jobs:
 
       - name: Get current hour (GMT-3)
         id: time
-        run: echo "time=$(TZ=America/Sao_Paulo date +'%H')" >> $GITHUB_ENV
+        run: |
+          echo "time=$(TZ=America/Sao_Paulo date +'%H')" >> $GITHUB_ENV
+          echo "Hora atual: ${{ env.time }}"
 
       - name: Run JavaScript to get the message
         id: get-message
         run: |
-          hour=${{ env.time }}
-          message=$(node ./scripts/getMessage.js $hour)
+          hour="${{ env.time }}"  # Garante que a variável seja tratada como string
+          message=$(node ./scripts/getMessage.js "$hour")  # Passa a variável corretamente
           echo "message=$message" >> $GITHUB_ENV
           echo "Mensagem retornada: $message"
 
