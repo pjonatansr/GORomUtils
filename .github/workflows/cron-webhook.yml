@@ -18,12 +18,14 @@ jobs:
         id: get-message
         run: |
           hour=$(TZ=America/Sao_Paulo date +'%H')
+          
           # Verifica se a execução é manual
           if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
             prefix="ISSO É UM TESTE\n"
           else
             prefix=""
           fi
+
           # Script Node.js para obter a mensagem
           message=$(node -e "
           const messages = { 
@@ -41,13 +43,16 @@ jobs:
           const defaultMessage = 'MVP, bora!';
           const hour = process.env.HOUR;
           const message = messages[hour] || defaultMessage;
-          console.log('$prefix' + defaultMentions + message);
-          " HOUR=$hour)
+          console.log(process.env.PREFIX + defaultMentions + message);
+          " HOUR=$hour PREFIX="$prefix")
+
+          # Agora a variável 'message' já contém o valor final, com o prefixo e a mensagem
           echo "message=$message" >> $GITHUB_ENV
-          echo "Mensagem final: $message"
+          echo "Mensagem final para o Discord: $message"
 
       - name: Send message to Discord Webhook
         run: |
+          # Enviar a mensagem para o Discord com o valor final de 'message'
           curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
           -d "{\"content\": \"${{ env.message }}\"}"
