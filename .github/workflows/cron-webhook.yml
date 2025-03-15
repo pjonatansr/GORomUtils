@@ -17,7 +17,7 @@ jobs:
       - name: Get and Run Message Script
         id: get-message
         run: |
-          hour=$(TZ=America/Sao_Paulo date +'%H')
+          hour=$(TZ=America/Sao_Paulo date +'%H')  # Obtém a hora com o fuso horário de São Paulo
           
           # Verifica se a execução é manual
           if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
@@ -41,7 +41,7 @@ jobs:
           };
           const defaultMentions = '<@262002263101407233> <@365676086874603522>\n';
           const defaultMessage = 'MVP, bora!';
-          const hour = process.env.HOUR;
+          const hour = process.env.HOUR;  // Obtém o valor da variável de ambiente HOUR
           const message = messages[hour] || defaultMessage;
           console.log(process.env.PREFIX + defaultMentions + message);
           " HOUR=$hour PREFIX="$prefix")
