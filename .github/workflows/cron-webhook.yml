@@ -18,6 +18,13 @@ jobs:
         id: get-message
         run: |
           hour=$(TZ=America/Sao_Paulo date +'%H')
+          # Verifica se a execução é manual
+          if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
+            prefix="ISSO É UM TESTE\n"
+          else
+            prefix=""
+          fi
+          # Script Node.js para obter a mensagem
           message=$(node -e "
           const messages = { 
             '00': 'AAAAAAPPPPPPOOOOOOCCCCCCC',
@@ -34,7 +41,7 @@ jobs:
           const defaultMessage = 'MVP, bora!';
           const hour = process.env.HOUR;
           const message = messages[hour] || defaultMessage;
-          console.log(defaultMentions + message);
+          console.log('$prefix' + defaultMentions + message);
           " HOUR=$hour)
           echo "message=$message" >> $GITHUB_ENV
           echo "Mensagem final: $message"
