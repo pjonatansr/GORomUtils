@@ -52,10 +52,10 @@ jobs:
 
       - name: Send message to Discord Webhook
         run: |
-          # Escapar corretamente a variável `message` para JSON
-          escaped_message=$(echo "${{ env.message }}" | jq -Rs .)
+          # Usar a variável de ambiente diretamente no comando
+          echo "Enviando mensagem: ${{ env.message }}"
 
           # Enviar a mensagem para o Discord com o valor final de 'message'
           curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
-          -d "{\"content\": $escaped_message}"
+          -d "{\"content\": \"${{ env.message }}\"}"
