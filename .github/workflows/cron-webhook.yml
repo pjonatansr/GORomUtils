@@ -14,48 +14,27 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Get and Run Message Script
+      - name: Get current hour (GMT-3)
+        id: time
+        run: |
+          hour=$(TZ=America/Sao_Paulo date +'%H')
+          echo "time=$hour" >> $GITHUB_ENV
+          echo "Hora capturada: $hour"
+
+      - name: Run JavaScript to get the message
         id: get-message
         run: |
-          hour=$(TZ=America/Sao_Paulo date +'%H')  # Obtém a hora com o fuso horário de São Paulo
-          
-          # Verifica se a execução é manual
-          if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
-            prefix="ISSO É UM TESTE\n"
-          else
-            prefix=""
-          fi
-
-          # Script Node.js para obter a mensagem
-          message=$(node -e "
-          const messages = { 
-            '00': 'AAAAAAPPPPPPOOOOOOCCCCCCC',
-            '08': 'Bom dia! Bora farmar a primeira wave de MVP!',
-            '10': 'Segunda wave de MVP iniciando! Vamos com tudo!',
-            '12': 'Hora do almoço? Mas e a wave de MVP?',
-            '14': 'AAAAAAPPPPPPOOOOOOCCCCCCC',
-            '16': 'Mais uma wave de MVP a caminho! Força!',
-            '18': 'A noite chegou, mas o farm de MVP não acabou!',
-            '20': 'Outra wave de MVP começando agora! Vamos!',
-            '22': 'Última wave de MVP do dia! Vamos com tudo!'
-          };
-          const defaultMentions = '<@262002263101407233> <@365676086874603522>\n';
-          const defaultMessage = 'MVP, bora!';
-          const hour = process.env.HOUR;  // Obtém o valor da variável de ambiente HOUR
-          const message = messages[hour] || defaultMessage;
-          console.log(process.env.PREFIX + defaultMentions + message);
-          " HOUR=$hour PREFIX="$prefix")
-
-          # Agora a variável 'message' já contém o valor final, com o prefixo e a mensagem
+          message=$(node ./scripts/getMessage.js)
           echo "message=$message" >> $GITHUB_ENV
-          echo "Mensagem final para o Discord: $message"
+          echo "Mensagem retornada: $message"
+        env:
+          time: ${{ env.time }}
+          message: ${{ env.message }}
 
       - name: Send message to Discord Webhook
         run: |
-          # Usar a variável de ambiente diretamente no comando
-          echo "Enviando mensagem: ${{ env.message }}"
-
-          # Enviar a mensagem para o Discord com o valor final de 'message'
           curl -X POST ${{ secrets.DISCORD_WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
           -d "{\"content\": \"${{ env.message }}\"}"
+        env:
+          message: ${{ env.message }}
