@@ -23,7 +23,7 @@ function getMessage(hour) {
   }
 
   if (!messages[hour]) {
-    return defaultMessage + ' (mensagem não encontrada)';
+    return '';
   }
 
   return `${defaultMentions}${messages[hour]}`;
